@@ -5,16 +5,6 @@
  *      Author: 민선홍
  */
 
-
-/*
- * singly linked list
- *
- *  Data Structures
- *  Department of Computer Science
- *  at Chungbuk National University
- */
-
-
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -31,24 +21,24 @@ typedef struct Head {
 
 
 /* 함수 리스트 */
-headNode* initialize(headNode* h);
-int freeList(headNode* h);
+headNode* initialize(headNode* h); // 헤드 노드 초기화
+int freeList(headNode* h); // 노드 및 연결리스트 해제
 
-int insertFirst(headNode* h, int key);
-int insertNode(headNode* h, int key);
-int insertLast(headNode* h, int key);
+int insertFirst(headNode* h, int key); // 리스트 맨 앞 입력 값 삽입
+int insertNode(headNode* h, int key); // 리스트 입력 값 삽입
+int insertLast(headNode* h, int key); // 리스트 맨뒤 뒤에 입력 값 삽임
 
-int deleteFirst(headNode* h);
-int deleteNode(headNode* h, int key);
-int deleteLast(headNode* h);
-int invertList(headNode* h);
+int deleteFirst(headNode* h); // 첫번째 노드 삭제
+int deleteNode(headNode* h, int key); // 입력 받은 값을 가지고 있는 노드 삭제
+int deleteLast(headNode* h); // 마지막 노드 삭제
+int invertList(headNode* h); // 가지고 있는 노드를 거꾸로 정렬하여 보여준다
 
-void printList(headNode* h);
+void printList(headNode* h); // 연결리스트 출력
 
 int main()
 {
-	char command;
-	int key;
+	char command; // 문자형 변수 command 생성
+	int key; // 정수형 변수 key 생성
 	headNode* headnode=NULL;
 
 	do{
@@ -65,44 +55,44 @@ int main()
 		printf("Command = ");
 		scanf(" %c", &command);
 
-		switch(command) {
+		switch(command) { // command의 입력 받은 값에 따라 switch 문 실행
 		case 'z': case 'Z':
-			headnode = initialize(headnode);
+			headnode = initialize(headnode); // 헤드노드 초기화 함수 실행
 			break;
 		case 'p': case 'P':
-			printList(headnode);
+			printList(headnode); // 연결리스트 출력함수 실행
 			break;
 		case 'i': case 'I':
 			printf("Your Key = ");
-			scanf("%d", &key);
-			insertNode(headnode, key);
+			scanf("%d", &key); // key의 값을 요청받음
+			insertNode(headnode, key); // 노드의 값을 넣는 함수 실행
 			break;
 		case 'd': case 'D':
 			printf("Your Key = ");
-			scanf("%d", &key);
-			deleteNode(headnode, key);
+			scanf("%d", &key); // key의 값을 요청받음
+			deleteNode(headnode, key); // 입력받은 노드의 값을 가지고 있는 노드 삭제 함수 실행
 			break;
 		case 'n': case 'N':
 			printf("Your Key = ");
-			scanf("%d", &key);
-			insertLast(headnode, key);
+			scanf("%d", &key); // key의 값을 요청받음
+			insertLast(headnode, key); // 연결리스트 맨 뒤에 값 삽입함수 실행
 			break;
 		case 'e': case 'E':
-			deleteLast(headnode);
+			deleteLast(headnode); // 연결리스트 맨 뒤에 있는 노드의 값 삭제하는 함수 실행
 			break;
 		case 'f': case 'F':
 			printf("Your Key = ");
-			scanf("%d", &key);
-			insertFirst(headnode, key);
+			scanf("%d", &key); // key의 값을 요청받음
+			insertFirst(headnode, key); // 연결리스트 맨 처음에 값 삽입함수 실행
 			break;
 		case 't': case 'T':
-			deleteFirst(headnode);
+			deleteFirst(headnode); // 연결리스트 첫번째 노드의 값 삭제하는 함수 실행
 			break;
 		case 'r': case 'R':
-			invertList(headnode);
+			invertList(headnode); // 연결리스트 안에 가지고 있는 노드의 값들을 반대로 정렬하여 실행
 			break;
 		case 'q': case 'Q':
-			freeList(headnode);
+			freeList(headnode); // 노드 및 연결리스트 해제하는 함수 실행
 			break;
 		default:
 			printf("\n       >>>>>   Concentration!!   <<<<<     \n");
@@ -169,7 +159,23 @@ int insertNode(headNode* h, int key) {
  * list에 key에 대한 노드하나를 추가
  */
 int insertLast(headNode* h, int key) {
+	listNode* new; // 삽입할 신규 노드 newNode 정의
+	listNode* last; // 노드가 존재할 경우 마지막 노드 last로 정의
+	new = (listNode*)malloc(sizeof(listNode)); // new의 데이터 공간을 메모리에 할당받아 주소값new에 저장
+	new->key = key; // new의 데이터 필드에 key 저장
+	new->link = NULL; // 아직 가리키는 메모리 주소값이 없으므로 NULL 저장
 
+	if(h->first == NULL) // 만약 연결리스트가 공백인 경우
+	{
+		h->first = new; // h가 new를 가리킬 수 있도록 new를 저장하고 종료
+		return 0;
+	}
+	else
+	{
+	last = h -> first; // 공백이 아닌경우, 헤드노드부터 시작해 반복하여 마지막 노드를 find
+	while(last->link != NULL) last = last->link;
+	last->link = new; // 마지막 노드의 링크 필드에 new의 주소값 저장하여 가리키게 한다.
+	}
 	return 0;
 }
 
@@ -198,6 +204,27 @@ int deleteNode(headNode* h, int key) {
  */
 int deleteLast(headNode* h) {
 
+	listNode* prev; // 삭제할 노드의 선행 노드를 가리키는 변수
+	listNode* del; // 삭제할 노드를 가리킬 변수
+	if(h->first == NULL) return 0; // 만약 빈 리스트일 경우 종료
+	if(h -> first -> link == NULL) // 리스트의 노드가 한 개일 경우,
+	{
+		free(h -> first); // 노드의 메모리 해제
+		h -> first = NULL; // 노드의 link 필드에 NULL 할당
+		return 0;
+	}
+	else
+	{
+		prev = h -> first; // 2개 이상인 경우, 삭제할 노드의 선행노드를 첫번 째 노드로 지정
+		del = h -> first -> link; // 삭제할 노드를 두 번째 노드로 지정
+		while(del -> link != NULL) // while문을 이용하여, 링크필드가 NULL이 아닐 때 까지 뒤로 한칸 씩 이동
+		{
+			prev = del;
+			del = del -> link;
+		}
+		free(del); // 마지막 노드를 찾으면 메모리 해제
+		prev -> link = NULL; // 선행 노드의 링크 필드에 NULL 할당
+	}
 	return 0;
 }
 
@@ -206,6 +233,9 @@ int deleteLast(headNode* h) {
  * 리스트의 링크를 역순으로 재 배치
  */
 int invertList(headNode* h) {
+	listNode* mid, trail;
+	mid = NULL;
+
 
 	return 0;
 }
