@@ -7,7 +7,6 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-#include<string.h>
 
 /* 필요한 헤더파일 추가 */
 
