@@ -127,15 +127,15 @@ int freeList(headNode* h) {
 	/* h와 연결된 listNode 메모리 해제
 	* headNode도 해제되어야 함.
 	*/
-	listNode* p = h->first;
+	listNode* p = h->first; // 새로운 p의 노드가 h -> first 가르키는 값
 
-	listNode* prev = NULL;
-	while (p != NULL) {
+	listNode* prev = NULL; // 전 노드의 가리키는 값이 NULL
+	while (p != NULL) { // p가 NULL이 될 때 까지 반복문 실행
 		prev = p;
 		p = p->link;
-		free(prev);
+		free(prev); // prev 노드의 초기화
 	}
-	free(h);
+	free(h); // h 노드의 초기화
 	return 0;
 }
 
@@ -146,11 +146,11 @@ int freeList(headNode* h) {
 */
 int insertFirst(headNode* h, int key) {
 
-	listNode* node = (listNode*)malloc(sizeof(listNode));
-	node->key = key;
+	listNode* node = (listNode*)malloc(sizeof(listNode)); // node의 데이터 공간을 메모리에 할당받아 주소값 node에 저장
+	node->key = key; // node의 데이터 필드에 key 저장
 
-	node->link = h->first;
-	h->first = node;
+	node->link = h->first;  // 노드가 가리키고 있는 link는 h가 가리키고 있는 first
+	h->first = node; // h가 node를 가리킬 수 있도록 node를 저장하고 종료
 
 	return 0;
 }
@@ -171,30 +171,30 @@ int insertNode(headNode* h, int key) {
 		h->first = new; // h가 new를 가리킬 수 있도록 new를 저장하고 종료
 		return 0;
 	}
-	else if (h->first->key >= new->key)
+	else if (h->first->key >= new->key) // 만약 first 가 key 가리키는 값이 new가 key를 가키리는 값보다 크거나 같으면
 	{
-		new->link = h->first;
-		h->first = new;
+		new->link = h->first; // new 노드는 h가 가리키는 first
+		h->first = new; // h가 가리키는 first에 new 대입
 		return 0;
 	}
 	else
 	{
 		x = h->first->link;
 		prev = h->first;
-		while (x != NULL)
+		while (x != NULL) // x가 NULL를 가리킬 때 까지, while 문 실행
 		{
-			if (x->key > new->key)
+			if (x->key > new->key) // 만일 new가 가리키는 key 보다 x가 가리키는 key가 더 크다면, 전 노드에 대입
 			{
-				new->link = x;
-				prev->link = new;
+				new->link = x; // new가 가리키고 있는 link는 x
+				prev->link = new; // 전 노드가 가리키고 있는 link는 new
 				return 0;
 			}
-			prev = x;
-			x = x->link;
+			prev = x; // 전노드는 x
+			x = x->link; // x는 x가 가리키고 있는 다음 link
 
 		}
-		prev->link = new;
-		new->link = NULL;
+		prev->link = new; // 전 노드의 link는 new
+		new->link = NULL; // new가 가리키고 있는 link NULL 값
 	}
 	return 0;
 }
@@ -239,9 +239,9 @@ int deleteFirst(headNode* h) {
 	}
 	else
 	{
-		del = h->first;
-		h->first = del->link;
-		free(del);
+		del = h->first; // 지우려는 노드는 헤드가 가리키는 처음 노드의 값
+		h->first = del->link; // first 노드는 del이 가리키는 link
+		free(del); // del 초기화
 	}
 	return 0;
 }
@@ -269,7 +269,7 @@ int deleteNode(headNode* h, int key) {
 	{
 		prev = h->first; // 전노드는 헤드가 가리키는 처음 노드의 값
 		del = prev->link; // 지우려는 노드는 처음 노드가 가리키는 link
-		if (prev->key == key) {//첫번째 노드가 삭제하려는 값이라면?
+		if (prev->key == key) { //첫번째 노드가 삭제하려는 값이라면,
 			h->first = prev->link;
 			free(prev);
 			return 0;
@@ -282,8 +282,8 @@ int deleteNode(headNode* h, int key) {
 				free(del); // del 값 노드의 메모리 해제
 				return 0;
 			}
-			prev = del;
-			del = del->link;
+			prev = del; // 선행 노드의 del 노드 삽입
+			del = del->link; // del 노드에 del link 필드 할당
 		}
 	}
 	return 0;
@@ -341,19 +341,19 @@ int invertList(headNode* h) {
 
 
 void printList(headNode* h) {
-	int i = 0;
-	listNode* p;
+	int i = 0; // 정수형 변수 i를 선언해 0 값 대입
+	listNode* p; // 새로운 노드p 생성
 
 	printf("\n---PRINT\n");
 
-	if (h == NULL) {
+	if (h == NULL) { // head가 NULL을 가리키고 있으면, 아무것도 없다고 출력
 		printf("Nothing to print....\n");
 		return;
 	}
 
-	p = h->first;
+	p = h->first; // 노드 p에 head가 first 가리키는 값 대입
 
-	while (p != NULL) {
+	while (p != NULL) { // p가 NULL이 될 때까지 반복문 실행하여, 리스트 출력
 		printf("[ [%d]=%d ] ", i, p->key);
 		p = p->link;
 		i++;
