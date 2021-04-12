@@ -7,6 +7,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
 /* 필요한 헤더파일 추가 */
 
@@ -37,6 +38,7 @@ void printList(headNode* h); // 연결리스트 출력
 
 int main()
 {
+	printf("----- [민선홍] [2018038028] -----");
 	char command; // 문자형 변수 command 생성
 	int key; // 정수형 변수 key 생성
 	headNode* headnode=NULL;
@@ -53,6 +55,7 @@ int main()
 		printf("----------------------------------------------------------------\n");
 
 		printf("Command = ");
+		fflush(stdout);
 		scanf(" %c", &command);
 
 		switch(command) { // command의 입력 받은 값에 따라 switch 문 실행
@@ -64,16 +67,19 @@ int main()
 			break;
 		case 'i': case 'I':
 			printf("Your Key = ");
+			fflush(stdout);
 			scanf("%d", &key); // key의 값을 요청받음
 			insertNode(headnode, key); // 노드의 값을 넣는 함수 실행
 			break;
 		case 'd': case 'D':
 			printf("Your Key = ");
+			fflush(stdout);
 			scanf("%d", &key); // key의 값을 요청받음
 			deleteNode(headnode, key); // 입력받은 노드의 값을 가지고 있는 노드 삭제 함수 실행
 			break;
 		case 'n': case 'N':
 			printf("Your Key = ");
+			fflush(stdout);
 			scanf("%d", &key); // key의 값을 요청받음
 			insertLast(headnode, key); // 연결리스트 맨 뒤에 값 삽입함수 실행
 			break;
@@ -82,6 +88,7 @@ int main()
 			break;
 		case 'f': case 'F':
 			printf("Your Key = ");
+			fflush(stdout);
 			scanf("%d", &key); // key의 값을 요청받음
 			insertFirst(headnode, key); // 연결리스트 맨 처음에 값 삽입함수 실행
 			break;
@@ -184,8 +191,21 @@ int insertLast(headNode* h, int key) {
  * list의 첫번째 노드 삭제
  */
 int deleteFirst(headNode* h) {
+	listNode* del;
 
-
+	if(h->first == NULL) return 0; // 만약 빈 리스트일 경우 종료
+		if(h -> first -> link == NULL) // 리스트의 노드가 한 개일 경우,
+		{
+			free(h -> first); // 노드의 메모리 해제
+			h -> first = NULL; // 노드의 link 필드에 NULL 할당
+			return 0;
+		}
+		else
+		{
+			del = h -> first;
+			h -> first = del -> link;
+			free(del);
+		}
 	return 0;
 }
 
@@ -194,7 +214,31 @@ int deleteFirst(headNode* h) {
  * list에서 key에 대한 노드 삭제
  */
 int deleteNode(headNode* h, int key) {
-
+	listNode* del = h -> first;
+	listNode* prev;
+	if(h->first == NULL) return 0; // 만약 빈 리스트일 경우 종료
+	if(h -> first -> link == NULL) // 리스트의 노드가 한 개일 경우,
+	{
+		if(key == del -> key)
+		{
+		free(del); // 노드의 메모리 해제
+		h -> first = NULL; // 노드의 link 필드에 NULL 할당
+		return 0;
+		}
+	}
+	else
+	{
+		prev = h -> first;
+		del = h -> first -> link;
+		while(del != NULL)
+		{
+			if(del->key == key)
+			{
+				prev = del -> link;
+				free(del);
+			}
+		}
+	}
 	return 0;
 
 }
@@ -233,9 +277,6 @@ int deleteLast(headNode* h) {
  * 리스트의 링크를 역순으로 재 배치
  */
 int invertList(headNode* h) {
-	listNode* mid, trail;
-	mid = NULL;
-
 
 	return 0;
 }
